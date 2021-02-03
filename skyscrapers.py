@@ -1,3 +1,8 @@
+"""
+https://github.com/alinamuliak/skyscrapers.git
+"""
+
+
 def read_input(path: str) -> list:
     """
     Read game board file from path.
@@ -160,7 +165,17 @@ def check_skyscrapers(input_path: str):
     >>> check_skyscrapers("check.txt")
     True
     """
-    pass
+    board = read_input(input_path)
+    # checking all conditions
+    if not check_not_finished_board(board):
+        return False
+    if not check_uniqueness_in_rows(board):
+        return False
+    if not check_horizontal_visibility(board):
+        return False
+    if not check_columns(board):
+        return False
+    return True
 
 
 if __name__ == "__main__":
