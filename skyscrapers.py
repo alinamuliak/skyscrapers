@@ -1,5 +1,5 @@
 """
-https://github.com/alinamuliak/skyscrapers.git
+This module help to play skyscrappers game.
 """
 
 
