@@ -105,10 +105,22 @@ def check_horizontal_visibility(board: list):
         if not line[0].isdigit():
             continue
         able_to_see = 1    # one because the first building is always visible
-        for pivot in range(1, len(line[1:-1])):
-            if left_to_right_check(line[1:-1], pivot):
+        for pivot in range(2, len(line[1:-1]) + 1):
+            if left_to_right_check(line, pivot):
                 able_to_see += 1
         if able_to_see != int(line[0]):
+            print(line, able_to_see)
+            return False
+
+    for line in board:
+        reversed_line = line[::-1]
+        if not reversed_line[0].isdigit():
+            continue
+        able_to_see = 1    # one because the first building is always visible
+        for pivot in range(2, len(reversed_line[1:-1]) + 1):
+            if left_to_right_check(reversed_line, pivot):
+                able_to_see += 1
+        if able_to_see != int(reversed_line[0]):
             return False
     return True
 
@@ -138,7 +150,6 @@ def check_columns(board: list):
         for line in board:
             vice_versa_board[current_sumbol] += line[current_sumbol]
         current_sumbol += 1
-
     if not check_uniqueness_in_rows(vice_versa_board):
         return False
 
