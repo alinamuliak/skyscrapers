@@ -32,7 +32,7 @@ def left_to_right_check(input_line: str, pivot: int) -> bool:
     >>> left_to_right_check("452453*", 5)
     False
     """
-    max_building = max(list(input_line[:pivot]))
+    max_building = max(list(input_line[1:pivot]))
     if max_building < input_line[pivot]:
         return True
     return False
