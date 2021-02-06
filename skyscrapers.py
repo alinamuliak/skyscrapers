@@ -1,6 +1,7 @@
 """
 This module help to play skyscrappers game.
 """
+import doctest
 
 
 def read_input(path: str) -> list:
@@ -18,6 +19,28 @@ def read_input(path: str) -> list:
     return list_of_lines
 
 
+def position_check(input_line: str, pivot: int) -> bool:
+    """
+    Check row-wise visibility from left to right.
+    Return True if the building on pivot is visible looking to the right,
+    False otherwise.
+
+    input_line - representing board row.
+    pivot - number of the building position.
+
+    >>> position_check("412453*", 4)
+    True
+    >>> position_check("452453*", 5)
+    False
+    """
+    if pivot == 1:
+        return True
+    max_building = max(list(input_line[1:pivot]))
+    if max_building < input_line[pivot]:
+        return True
+    return False
+
+
 def left_to_right_check(input_line: str, pivot: int) -> bool:
     """
     Check row-wise visibility from left to right.
@@ -32,10 +55,14 @@ def left_to_right_check(input_line: str, pivot: int) -> bool:
     >>> left_to_right_check("452453*", 5)
     False
     """
-    max_building = max(list(input_line[1:pivot]))
-    if max_building < input_line[pivot]:
-        return True
-    return False
+    line = input_line
+    able_to_see = 1    # one because the first building is always visible
+    for hint in range(2, len(line[1:-1]) + 1):
+        if position_check(line, hint):
+            able_to_see += 1
+    if able_to_see != pivot:
+        return False
+    return True
 
 
 def check_not_finished_board(board: list):
@@ -106,10 +133,9 @@ def check_horizontal_visibility(board: list):
             continue
         able_to_see = 1    # one because the first building is always visible
         for pivot in range(2, len(line[1:-1]) + 1):
-            if left_to_right_check(line, pivot):
+            if position_check(line, pivot):
                 able_to_see += 1
         if able_to_see != int(line[0]):
-            print(line, able_to_see)
             return False
 
     for line in board:
@@ -118,7 +144,7 @@ def check_horizontal_visibility(board: list):
             continue
         able_to_see = 1    # one because the first building is always visible
         for pivot in range(2, len(reversed_line[1:-1]) + 1):
-            if left_to_right_check(reversed_line, pivot):
+            if position_check(reversed_line, pivot):
                 able_to_see += 1
         if able_to_see != int(reversed_line[0]):
             return False
@@ -189,5 +215,6 @@ def check_skyscrapers(input_path: str):
     return True
 
 
-if __name__ == "__main__":
-    print(check_skyscrapers("check.txt"))
+# if __name__ == "__main__":
+#     print(check_skyscrapers("check.txt"))
+doctest.testmod()
